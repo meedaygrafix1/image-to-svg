@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, ArrowRight, Download, Copy, RefreshCw, X, Image as ImageIcon, Layers, Zap, Star, Loader2, AlertCircle, MousePointer2, LucideIcon } from 'lucide-react';
+import { Upload, ArrowRight, Download, Copy, RefreshCw, X, Image as ImageIcon, Layers, Zap, Star, Loader2, AlertCircle, MousePointer2 } from 'lucide-react';
 
 // --- Improved Script Loader ---
 const SCRIPT_URLS = [
@@ -563,7 +563,7 @@ const Converter = ({ onClose }: { onClose: () => void }) => {
                 <div className="flex-1 bg-white border-4 border-black relative min-h-[300px] flex items-center justify-center p-4 overflow-hidden">
                   <div className="absolute inset-0 pointer-events-none" style={{
                     opacity: 0.1,
-                    backgroundImage: 'linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000)',
+                    backgroundImage: 'linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000),',
                     backgroundSize: '20px 20px',
                     backgroundPosition: '0 0, 10px 10px'
                   }}></div>
