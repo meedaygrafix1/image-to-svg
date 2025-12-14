@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, ArrowRight, Download, Copy, RefreshCw, X, Image as ImageIcon, Layers, Zap, Star, Loader2, AlertCircle, MousePointer2 } from 'lucide-react';
+import { Upload, ArrowRight, Download, Copy, RefreshCw, X, Image as ImageIcon, Layers, Zap, Star, Loader2, AlertCircle, MousePointer2, LucideIcon } from 'lucide-react';
 
 // --- Improved Script Loader ---
 const SCRIPT_URLS = [
@@ -8,12 +8,19 @@ const SCRIPT_URLS = [
   "https://cdnjs.cloudflare.com/ajax/libs/imagetracerjs/1.2.6/imagetracer_v1.2.6.min.js"
 ];
 
+// Extend Window interface for ImageTracer
+declare global {
+  interface Window {
+    ImageTracer: any;
+  }
+}
+
 const loadVectorEngine = async () => {
   if (window.ImageTracer) return true;
 
   for (const url of SCRIPT_URLS) {
     try {
-      await new Promise((resolve, reject) => {
+      await new Promise<void>((resolve, reject) => {
         const script = document.createElement('script');
         script.src = url;
         // Removing crossOrigin to be less strict about headers
@@ -34,7 +41,16 @@ const loadVectorEngine = async () => {
 
 // --- Neubrutalist Components ---
 
-const NeoButton = ({ children, onClick, variant = 'primary', className = '', disabled = false, title = '' }) => {
+interface NeoButtonProps {
+  children: React.ReactNode;
+  onClick?: () => void;
+  variant?: 'primary' | 'secondary' | 'accent' | 'success' | 'danger';
+  className?: string;
+  disabled?: boolean;
+  title?: string;
+}
+
+const NeoButton: React.FC<NeoButtonProps> = ({ children, onClick, variant = 'primary', className = '', disabled = false, title = '' }) => {
   const baseStyles = "relative inline-flex items-center justify-center font-bold border-4 border-black px-6 py-3 transition-all active:translate-x-[4px] active:translate-y-[4px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed select-none";
 
   const variants = {
@@ -52,13 +68,19 @@ const NeoButton = ({ children, onClick, variant = 'primary', className = '', dis
   );
 };
 
-const NeoCard = ({ children, className = '', color = 'bg-white' }) => (
+interface NeoCardProps {
+  children: React.ReactNode;
+  className?: string;
+  color?: string;
+}
+
+const NeoCard: React.FC<NeoCardProps> = ({ children, className = '', color = 'bg-white' }) => (
   <div className={`${color} border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] ${className}`}>
     {children}
   </div>
 );
 
-const Header = ({ onStart }) => (
+const Header = ({ onStart }: { onStart: () => void }) => (
   <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b-4 border-black">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex justify-between items-center h-20">
@@ -85,7 +107,7 @@ const Header = ({ onStart }) => (
   </header>
 );
 
-const Hero = ({ onStart }) => (
+const Hero = ({ onStart }: { onStart: () => void }) => (
   <div className="relative pt-32 pb-20 bg-[#F4F4F0] overflow-hidden min-h-screen flex items-center">
     <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #000 2px, transparent 2.5px)', backgroundSize: '24px 24px' }}></div>
     <div className="absolute top-40 right-[-5%] w-64 h-64 bg-[#4ECDC4] rounded-full border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hidden lg:block"></div>
@@ -224,9 +246,9 @@ const HowTo = () => (
   </section>
 );
 
-const Converter = ({ onClose }) => {
-  const [image, setImage] = useState(null);
-  const [svgOutput, setSvgOutput] = useState(null);
+const Converter = ({ onClose }: { onClose: () => void }) => {
+  const [image, setImage] = useState<string | null>(null);
+  const [svgOutput, setSvgOutput] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [engineStatus, setEngineStatus] = useState("idle");
   const [copied, setCopied] = useState(false);
@@ -247,8 +269,8 @@ const Converter = ({ onClose }) => {
     return () => { mounted = false; };
   }, []);
 
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
       if (file.size > 10 * 1024 * 1024) {
         alert("File is too large! Please use an image under 10MB.");
@@ -256,7 +278,7 @@ const Converter = ({ onClose }) => {
       }
       const reader = new FileReader();
       reader.onload = (event) => {
-        setImage(event.target.result);
+        setImage(event.target?.result as string);
         setSvgOutput(null);
       };
       reader.readAsDataURL(file);
@@ -306,6 +328,11 @@ const Converter = ({ onClose }) => {
           canvas.height = height;
           const ctx = canvas.getContext('2d');
 
+          if (!ctx) {
+            setIsProcessing(false);
+            return;
+          }
+
           // --- Automatic Optimization Logic ---
           // We decide if we need boost or smoothing based on the chosen mode
           const needsBoost = settings.detailLevel === 'smooth' || settings.detailLevel === 'sharp';
@@ -344,7 +371,7 @@ const Converter = ({ onClose }) => {
             qtres: qtres,
             pathomit: pathomit,
             colorsampling: 2,
-            numberofcolors: parseInt(settings.numberofcolors),
+            numberofcolors: typeof settings.numberofcolors === 'string' ? parseInt(settings.numberofcolors) : settings.numberofcolors,
             mincolorratio: 0,
             colorquantcycles: 3,
             scale: 1,
@@ -475,7 +502,7 @@ const Converter = ({ onClose }) => {
                       <label className="font-bold uppercase text-sm">Colors</label>
                       <select
                         value={settings.numberofcolors}
-                        onChange={(e) => setSettings({ ...settings, numberofcolors: e.target.value })}
+                        onChange={(e) => setSettings({ ...settings, numberofcolors: parseInt(e.target.value) })}
                         className="w-full bg-white border-4 border-black font-bold p-3 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
                       >
                         <option value="2">2 (B&W)</option>
