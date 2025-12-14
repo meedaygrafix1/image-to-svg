@@ -120,8 +120,8 @@ const Hero = ({ onStart }: { onStart: () => void }) => (
           </div>
           <h1 className="text-6xl sm:text-7xl md:text-8xl font-black text-black leading-[0.9] tracking-tighter">
             PIXELS<br />
-            TO <span className="text-[#FFD23F] text-stroke-black">PATHS</span><br />
-            <span className="text-transparent text-stroke-2 text-stroke-black">INSTANTLY</span>
+            TO <span className="text-black md:text-[#FFD23F] text-stroke-black">PATHS</span><br />
+            <span className="text-black md:text-transparent text-stroke-2 text-stroke-black">INSTANTLY</span>
           </h1>
           <p className="text-xl font-bold text-gray-800 max-w-lg border-l-8 border-[#FF6B6B] pl-6 py-2">
             Convert raster images to scalable vectors. No server uploads. 100% Client-side.
@@ -173,11 +173,13 @@ const Hero = ({ onStart }: { onStart: () => void }) => (
     </div>
 
     <style>{`
-      .text-stroke-black {
-        -webkit-text-stroke: 2px black;
-      }
-      .text-stroke-2 {
-        -webkit-text-stroke: 2px black;
+      @media (min-width: 768px) {
+        .text-stroke-black {
+          -webkit-text-stroke: 2px black;
+        }
+        .text-stroke-2 {
+          -webkit-text-stroke: 2px black;
+        }
       }
       .animate-spin-slow {
         animation: spin 3s linear infinite;
