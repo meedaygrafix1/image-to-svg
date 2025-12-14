@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbar for a brutalist feel */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-left: 2px solid black;
+}
+
+::-webkit-scrollbar-thumb {
+  background: black;
+  border: 2px solid black;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FFD23F;
+}
+
+body {
+  background-color: #F4F4F0;
+}
