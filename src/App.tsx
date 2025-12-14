@@ -568,25 +568,10 @@ const Converter = ({ onClose }: { onClose: () => void }) => {
                     backgroundPosition: '0 0, 10px 10px'
                   }}></div>
                   {!svgOutput ? (
-                    image ? (
-                      <div className="w-full h-full flex items-center justify-center relative z-10 p-4">
-                        <img
-                          src={image}
-                          alt="Preview"
-                          className="max-w-full max-h-full object-contain opacity-50 grayscale"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <p className="bg-black text-white px-4 py-2 font-bold uppercase rotate-[-2deg] border-2 border-[#4ECDC4] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                            Ready to Vectorize
-                          </p>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="text-center p-8 relative z-10">
-                        <div className="bg-gray-200 w-24 h-24 border-4 border-black flex items-center justify-center mx-auto mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"><Layers className="h-10 w-10 text-gray-400" /></div>
-                        <p className="font-bold text-gray-400 uppercase">Waiting for input...</p>
-                      </div>
-                    )
+                    <div className="text-center p-8 relative z-10">
+                      <div className="bg-gray-200 w-24 h-24 border-4 border-black flex items-center justify-center mx-auto mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"><Layers className="h-10 w-10 text-gray-400" /></div>
+                      <p className="font-bold text-gray-400 uppercase">Waiting for input...</p>
+                    </div>
                   ) : (
                     <div
                       className="w-full h-full flex items-center justify-center relative z-10 [&>svg]:w-full [&>svg]:h-full [&>svg]:max-w-full [&>svg]:max-h-full"
