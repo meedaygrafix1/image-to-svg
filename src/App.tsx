@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, ArrowRight, Download, Copy, RefreshCw, X, Image as ImageIcon, Layers, Zap, Star, Loader2, AlertCircle, MousePointer2 } from 'lucide-react';
+import { Upload, ArrowRight, Download, RefreshCw, X, Image as ImageIcon, Layers, Zap, Star, Loader2, AlertCircle, MousePointer2 } from 'lucide-react';
 
 // --- Improved Script Loader ---
 const SCRIPT_URLS = [
