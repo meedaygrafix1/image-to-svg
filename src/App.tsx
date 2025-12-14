@@ -560,13 +560,15 @@ const Converter = ({ onClose }: { onClose: () => void }) => {
                   <h3 className="text-2xl font-black uppercase">Vector Output</h3>
                   {svgOutput && <span className="font-bold text-xs bg-[#4ECDC4] border-2 border-black px-2 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">READY</span>}
                 </div>
-                <div className="flex-1 bg-white border-4 border-black relative min-h-[300px] flex items-center justify-center p-4 overflow-hidden">
-                  <div className="absolute inset-0 pointer-events-none" style={{
-                    opacity: 0.1,
-                    backgroundImage: 'linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000),',
-                    backgroundSize: '20px 20px',
-                    backgroundPosition: '0 0, 10px 10px'
-                  }}></div>
+                <div className={`flex-1 ${svgOutput ? 'bg-black' : 'bg-white'} border-4 border-black relative min-h-[300px] flex items-center justify-center p-4 overflow-hidden`}>
+                  {!svgOutput && (
+                    <div className="absolute inset-0 pointer-events-none" style={{
+                      opacity: 0.1,
+                      backgroundImage: 'linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000),',
+                      backgroundSize: '20px 20px',
+                      backgroundPosition: '0 0, 10px 10px'
+                    }}></div>
+                  )}
                   {!svgOutput ? (
                     <div className="text-center p-8 relative z-10">
                       <div className="bg-gray-200 w-24 h-24 border-4 border-black flex items-center justify-center mx-auto mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"><Layers className="h-10 w-10 text-gray-400" /></div>
